@@ -53,6 +53,16 @@
                 }
                 return true;
             }
+
+            function validatePersonForm() {
+                var name = document.getElementById("name").value;
+                var description = document.getElementById("itemDescription").value;
+                if (name.trim() === "" || description.trim() === "") {
+                    alert("Please enter a name and description");
+                    return false;
+                }
+                return true;
+            }
         </script>
     </head>
     <body>
@@ -94,6 +104,40 @@
             </tr>
             </tbody>
         </table>
+
+        <h2>Add Person</h2>
+        <form action="/addPerson" method="post" onsubmit="return validatePersonForm()">
+            <div class="input-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="input-group">
+                <label for="descriptions">Descriptions:</label>
+                <select id="descriptions" name="descriptions" multiple required>
+                    <option th:each="bill : ${bills}" th:value="${bill.description}" th:text="${bill.description}"></option>
+                </select>
+            </div>
+            <button type="submit">Add Person</button>
+        </form>
+
+        <h2>People and Their Total Amounts</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Total Amount (SGD$)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="person : ${people}">
+                <td th:text="${person.name}"></td>
+                <td th:text="${person.description}"></td>
+                <td th:text="${person.totalAmount}"></td>
+            </tr>
+            </tbody>
+        </table>
+
         <form action="/clear" method="get">
             <button type="submit">Clear Bills</button>
         </form>
